@@ -14,6 +14,7 @@ cxr/*.dcm
 *.dcm
 *.dicom
 rotation_detector/training/cxr/*.dcm
+rotation_detector/labels/*
 
 # --- Mac System Files ---
 .DS_Store
