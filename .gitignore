@@ -13,6 +13,7 @@ medgemma_vision/
 cxr/*.dcm
 *.dcm
 *.dicom
+rotation_detector/training/cxr/*.dcm
 
 # --- Mac System Files ---
 .DS_Store
