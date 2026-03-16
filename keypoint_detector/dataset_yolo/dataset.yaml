@@ -1,0 +1,11 @@
+path: /Users/brookshu/Documents/GitHub/ght-qcxr/ght-qcxr/dataset_yolo
+train: images/train
+val: images/val
+nc: 3
+names:
+  # 0: cxr_landmarks
+  0: clavicle_left
+  1: clavicle_right
+  2: spine
+# kpt_shape: [3, 3]   # 3 keypoints, each has (x, y, v)
+# flip_idx: [1, 0, 2] # swap left/right clavicle on horizontal flip; spine stays spine

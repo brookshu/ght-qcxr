@@ -33,7 +33,9 @@ from transformers import PreTrainedTokenizer
 
 # --- CONFIGURATION ---
 MODEL_PATH = "./medgemma_vision" 
-TEST_FILE = "cxr/cxr1.dcm"
+#MODEL_PATH = "./medsiglip_vision"
+TEST_FILE = "cxr_test/cxr1.dcm"
+TEST_FOLDER = "all_dicoms_su/"
 
 def load_unified_model(model_path: str) -> Tuple[Any, PreTrainedTokenizer, Any]:
     print(f"🧠 Loading MedGemma 1.5 from {model_path}...")
@@ -49,6 +51,10 @@ def load_unified_model(model_path: str) -> Tuple[Any, PreTrainedTokenizer, Any]:
             raw_processor.use_fast = True
 
         config = load_config(model_path)
+        print("model_type:", getattr(config, "model_type", None))
+        print("architectures:", getattr(config, "architectures", None))
+        print("chat_template:", hasattr(config, "chat_template"))
+        print("vocab_size:", getattr(config, "vocab_size", None))
         processor = cast(PreTrainedTokenizer, raw_processor)
         
         # --- VERIFICATION BLOCK ---
@@ -93,7 +99,7 @@ def analyze_cxr(model: Any, processor: PreTrainedTokenizer, config: Any, image_p
     
     if image is None:
         print(f"⚠️  Could not process image: {image_path}")
-        return
+        return None, None, None, None, None
 
     # 2. PROMPT CONSTRUCTION
     # Format as list to trigger the <image> token insertion from the template
@@ -174,14 +180,18 @@ def analyze_cxr(model: Any, processor: PreTrainedTokenizer, config: Any, image_p
             title="[bold yellow]Clinical Findings[/bold yellow]",
             border_style="yellow"
         ))
+        return str(data.get("projection", "N/A")),rotation_str, str(data.get("inspiration", "N/A")), str(data.get("exposure", "N/A")), str(data.get("diagnostic_quality", "N/A"))
         
     except json.JSONDecodeError:
         # Fallback if model fails to generate valid JSON
         console.print("[bold red]❌ Failed to parse JSON response. Raw output:[/bold red]")
         console.print(response_text)
+        return None, None, None, None, None
+
     except Exception as e:
         console.print(f"[bold red]❌ An error occurred during display: {e}[/bold red]")
         console.print(response_text)
+        return None, None, None, None, None
 
     console.print(f"\n[dim]⏱️  Inference Time: {end_time - start_time:.2f}s[/dim]\n")
 
@@ -210,8 +220,33 @@ if __name__ == "__main__":
       "findings": "Brief summary of clinical findings"
     }
     """
+    proj_ct = 0
+    rot_ct = 0
+    insp_ct = 0
+    exp_ct = 0
+    total = 0
+    for file in os.listdir(TEST_FOLDER):
+        if os.path.exists(TEST_FILE):
+            #analyze_cxr(model, processor, config, TEST_FILE, query)
+            if file.lower().endswith('.dcm'):
+                proj, rot, insp, exp, diag = analyze_cxr(model, processor, config, os.path.join(TEST_FOLDER, file), query)
+                if [proj, rot, insp, exp, diag] == [None, None, None, None, None]:    
+                    continue
+                print(f"Projection: {proj}, Rotation: {rot}, Inspiration: {insp}, Exposure: {exp}")
+                if proj != "PA":
+                    proj_ct += 1
+                if rot != "None":
+                    rot_ct += 1
+                if insp != "Adequate":
+                    insp_ct += 1
+                if exp != "Adequate":
+                    exp_ct += 1
+                total += 1
+        else:
+            print(f"⚠️  Test file '{TEST_FILE}' not found.")
 
-    if os.path.exists(TEST_FILE):
-        analyze_cxr(model, processor, config, TEST_FILE, query)
-    else:
-        print(f"⚠️  Test file '{TEST_FILE}' not found.")
+    print(f"Summary for {total} images:")
+    print(f"Projection - PA: {total - proj_ct}, AP: {proj_ct}")
+    print(f"Rotation Detected: {rot_ct}")
+    print(f"Inspiration - Adequate: {total - insp_ct}, Under-inflated: {insp_ct}")
+    print(f"Exposure - Adequate: {total - exp_ct}, Suboptimal/Over-exposed: {exp_ct}")

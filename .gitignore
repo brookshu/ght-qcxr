@@ -13,6 +13,14 @@ medgemma_vision/
 cxr/*.dcm
 *.dcm
 *.dicom
+*.jpg
+*.png
+*.txt
+*.xml
+*.csv
+*/runs/detect/train*
+*/runs/pose/train*
+*/runs/segment/train*
 rotation_detector/training/cxr/*.dcm
 rotation_detector/labels/*
 

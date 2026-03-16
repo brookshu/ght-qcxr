@@ -1,0 +1,12 @@
+path: /Users/brookshu/Documents/GitHub/ght-qcxr/ght-qcxr/clavicle_bbox_detector/dataset_yolo
+
+train: images/train
+val: images/val
+
+nc: 3
+names:
+  0: left_clavicle
+  1: right_clavicle
+  2: spinous_process
+
+# train: train.txt

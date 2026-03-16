@@ -1,0 +1,8 @@
+path: /Users/brookshu/Documents/GitHub/ght-qcxr/ght-qcxr/rib_detector/
+
+
+train: images/train
+val: images/val
+
+names:
+  0: posterior_ribs

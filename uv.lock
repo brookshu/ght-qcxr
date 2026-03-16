@@ -467,6 +467,7 @@ name = "ght-qcxr"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "mlx-embeddings" },
     { name = "mlx-vlm" },
     { name = "numpy" },
     { name = "pillow" },
@@ -477,6 +478,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "mlx-embeddings", specifier = ">=0.0.5" },
     { name = "mlx-vlm", specifier = ">=0.3.9" },
     { name = "numpy", specifier = ">=2.4.2" },
     { name = "pillow", specifier = ">=12.1.0" },
@@ -700,6 +702,21 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/37/86/8592f35b2cb25077bb5e8bf0566b9bb2061b36baa774db3e5990e59848a4/mlx-0.30.5-cp314-cp314-macosx_26_0_arm64.whl", hash = "sha256:d2cc2d131f65f83141ffeb858eda3ae4b694030b2e1d7ed393b3a8f5fa6944f8", size = 574262, upload-time = "2026-02-03T04:28:11.548Z" },
     { url = "https://files.pythonhosted.org/packages/3d/c7/9393ae41bff83a69321aea8d8f481faf530f3b3f5912e364094ef2245e2b/mlx-0.30.5-cp314-cp314-manylinux_2_35_aarch64.whl", hash = "sha256:3a58a108ed4cea1f644fcf0cf2a7fbaabcc43f3022da46b61cf50a7d80fe77f8", size = 623221, upload-time = "2026-02-03T04:28:13.406Z" },
     { url = "https://files.pythonhosted.org/packages/74/e9/ee0fa04cb294382f778c7800367e8bcceac1832d0e17554ab8cabd2fc48a/mlx-0.30.5-cp314-cp314-manylinux_2_35_x86_64.whl", hash = "sha256:e623031b72e49b3c2ffbca203cc6a853f0c6c11afe271a9b410598d3fd9479f8", size = 662788, upload-time = "2026-02-03T04:28:14.764Z" },
+]
+
+[[package]]
+name = "mlx-embeddings"
+version = "0.0.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "huggingface-hub" },
+    { name = "mlx" },
+    { name = "mlx-vlm" },
+    { name = "transformers", extra = ["sentencepiece"] },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ef/b8/2f6f9e48386c1ab6fc0431d683296c45eb4bbcc5d3b4b2bf9594746d1efe/mlx_embeddings-0.0.5.tar.gz", hash = "sha256:0bcced68df6fb51ab98cd8ce5ae7a32db3853bca20e8c1c45e86452ed1d9d605", size = 475449, upload-time = "2025-10-29T22:38:28.853Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e7/66/524db48e1e90ae071589ebcd29cd8e03daa4f69ac63718f0977dac922f0f/mlx_embeddings-0.0.5-py2.py3-none-any.whl", hash = "sha256:3c13eba4c10d26362e6d92f5faffd58d1d9ab28d56f1ee210ea7766c7980c24a", size = 51547, upload-time = "2025-10-29T22:38:27.463Z" },
 ]
 
 [[package]]
@@ -1684,6 +1701,12 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/bc/79/845941711811789c85fb7e2599cea425a14a07eda40f50896b9d3fda7492/transformers-5.0.0.tar.gz", hash = "sha256:5f5634efed6cf76ad068cc5834c7adbc32db78bbd6211fb70df2325a9c37dec8", size = 8424830, upload-time = "2026-01-26T10:46:46.813Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/52/f3/ac976fa8e305c9e49772527e09fbdc27cc6831b8a2f6b6063406626be5dd/transformers-5.0.0-py3-none-any.whl", hash = "sha256:587086f249ce64c817213cf36afdb318d087f790723e9b3d4500b97832afd52d", size = 10142091, upload-time = "2026-01-26T10:46:43.88Z" },
+]
+
+[package.optional-dependencies]
+sentencepiece = [
+    { name = "protobuf" },
+    { name = "sentencepiece" },
 ]
 
 [[package]]

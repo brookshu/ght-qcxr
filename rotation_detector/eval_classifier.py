@@ -4,6 +4,7 @@ import argparse
 # import your inference helper
 from inference.rotation_infer import load_rotation_model, predict_rotation
 
+# python eval_classifier.py --csv ./labels/rotation_labels.csv --model_dir ./training/rotation_rotclf
 
 def main():
 
